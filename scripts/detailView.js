@@ -3,9 +3,10 @@
 * @param {number} id - ID of the Pokemon for which the detailview should be displayed
 */
 async function openDetailDialog(id) {
+    await loadNextPokemon(id);
     toggleClass('d_none', 'detailView');
     toggleClass('overflowHidden', 'body');
-    loadNextPokemon(id);
+
 }
 
 /**
