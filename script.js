@@ -8,7 +8,7 @@ const URL_TYPEIMG = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sp
 const ERROR_FETCHCATCH = "Schnittstellen-Aufruf ist fehlgeschlagen. Bitte versuchen Sie es Später wieder.";
 const LIGHTOPACITY = "0.6";
 const DARKOPACITY = "1";
-const LOADAMOUNT = 15;
+const LOADAMOUNT = 100;
 const TYPES = [
     {
         "typeName": "normal",
@@ -137,7 +137,7 @@ const TYPES = [
         "darkColorCode": `rgba(0,0,0,${DARKOPACITY})`
     }
 ];
-
+let reachedEnd = false;
 let allPokemons = []; // {name, url}
 let loadetPokemons = []; // detailinfos
 let searchedPokemon = [];
@@ -178,10 +178,14 @@ async function setAllPokemons() {
 * @param {number} amount - Number to be rendered from the start (index)
 */
 async function renderCardsAmount(start, amount) {
-    toggleClass("d_none", "spinnerContainer");
-    await addloadetPokemons(start, amount);
-    for (let i = start; i < (start + amount); i++) {
-        if (!(start + amount > allPokemons.length)) { //TODO: BUG: last x Pokemon will not be displayed, if start+amout is bigger than allPokemon.lenght
+    let forEend = start + amount;
+    if (forEend > allPokemons.length) {
+        forEend = allPokemons.length;
+    }
+    if (!reachedEnd) {
+        toggleClass("d_none", "spinnerContainer");
+        await addloadetPokemons(start, amount);
+        for (let i = start; i < forEend; i++) {
             currentlyRendertCounter++;
             let arrayOfTypeIds = getTypeIds(loadetPokemons[i]);
             if (arrayOfTypeIds.length > 1) {
@@ -192,11 +196,12 @@ async function renderCardsAmount(start, amount) {
                 setBackGroundColorCard(loadetPokemons[i].id, arrayOfTypeIds);
             }
         }
+        setPokemonCount();
+        loadMoreBtnRef.disabled = false;
+        toggleClass("d_none", "spinnerContainer");
+        document.getElementById('loadNextContainer').classList.remove("d_none");
     }
-    setPokemonCount();
-    loadMoreBtnRef.disabled = false;
-    toggleClass("d_none", "spinnerContainer");
-    document.getElementById('loadNextContainer').classList.remove("d_none");
+
 }
 
 /**
@@ -205,15 +210,20 @@ async function renderCardsAmount(start, amount) {
 * @param {number} amount - Number to be rendered from the start (index)
 */
 async function addloadetPokemons(start, amount) {
-    for (let i = start; i < (start + amount); i++) {
+    let forEend = start + amount;
+    let currentlyLoadetPokemonAsPromises = []
+    if (forEend > allPokemons.length) {
+        forEend = allPokemons.length;
+        reachedEnd = true;
+    }
+    for (let i = start; i < forEend; i++) {
         try {
-            let currentPokemon = await getPokemonByName(allPokemons[i].name);
-            let detailsPokemonX = await fetch(URL_POKEMON + currentPokemon.id);
-            loadetPokemons.push(await detailsPokemonX.json());
+            currentlyLoadetPokemonAsPromises.push(getPokemonByName(allPokemons[i].name));
         } catch (error) {
             console.error(ERROR_FETCHCATCH);
         }
     }
+    loadetPokemons.push(... await Promise.all(currentlyLoadetPokemonAsPromises))
 }
 
 /**
