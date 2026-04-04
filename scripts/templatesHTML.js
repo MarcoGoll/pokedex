@@ -56,11 +56,10 @@ function getHTMLForCardWithTwoTypes(loadetPokemon, type1URL, type2URL) {
 /**
 * Returns the HTML-Code for a Pokemon detail view
 * @param {object} pokemon - Pokemon object for which the detail view should be displayed
-* @param {object} pokemonSpecies - Species object for the Pokemon for which the detail view should be displayed
 * @param {string} descriptionText - Description Text which should be displayed
 * @returns {string} - The HTML-Code for a Pokemon detail view
 */
-function getHTMLForDetailView(pokemon, pokemonSpecies, descriptionText) {
+function getHTMLForDetailView(pokemon, descriptionText) {
     return `
 
             <button type="button" class="btn-close" aria-label="Close"
@@ -154,7 +153,6 @@ function getHTMLForDetailView(pokemon, pokemonSpecies, descriptionText) {
                             </div>
                         </div>
                     </div>
-                    <!-- TODO: EVOLVE CHAIN
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -165,26 +163,21 @@ function getHTMLForDetailView(pokemon, pokemonSpecies, descriptionText) {
                         </h2>
                         <div id="flush-collapseThree" class="accordion-collapse collapse"
                             data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <div class="containerEvolveChain">
-                                    <img class="evolveChainImg"
-                                        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-                                        alt="">
-                                    <p class="evolveChainText">lv.16</br>>></p>
-                                    <img class="evolveChainImg"
-                                        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"
-                                        alt="">
-                                    <p class="evolveChainText">lv.32</br>>></p>
-                                    <img class="evolveChainImg"
-                                        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png"
-                                        alt="">
+                            <div class="accordion-body jc_center">
+                                <div id="containerEvolveChain" class="containerEvolveChain">
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
-                    -->
                 </div>
             </div>
+    `
+}
+
+function getHTMLForDetailEvolveChain(pokemon) {
+    return `
+        <img class="evolveChainImg" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
     `
 }
 

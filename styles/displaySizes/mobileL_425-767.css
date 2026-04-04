@@ -87,6 +87,10 @@
     .content__Footer p {
         font-size: var(--fsMobileTertiary) !important;
     }
-
+/* 
+    .deepDetailInfo{
+        max-height: 200px;
+        overflow-y: auto;
+    } */
 
 }
