@@ -59,16 +59,16 @@ function getHTMLForCardWithTwoTypes(loadetPokemon, type1URL, type2URL) {
 * @param {string} descriptionText - Description Text which should be displayed
 * @returns {string} - The HTML-Code for a Pokemon detail view
 */
-function getHTMLForDetailView(pokemon, descriptionText) {
+function getHTMLForDetailView(pokemon, nextPokemon, previousPokemon, descriptionText) {
     return `
 
             <button type="button" class="btn-close" aria-label="Close"
                 onclick="toggleClass('d_none', 'detailView'), toggleClass('overflowHidden', 'body')"></button>
             <button type="button" class="moveBtn" id="previousPokemonBtn" aria-label="previous"
-                onclick="loadNextPokemon(${(pokemon.id) - 1})"><img src="./assets/icons/googleFontsIcons/left.svg" alt="left">
+                onclick="loadNextPokemon(${previousPokemon.id})"><img src="./assets/icons/googleFontsIcons/left.svg" alt="left">
             </button>
             <button type="button" class="moveBtn" id="nextPokemonBtn" aria-label="previous"
-                onclick="loadNextPokemon(${(pokemon.id) + 1})"><img src="./assets/icons/googleFontsIcons/right.svg" alt="right">
+                onclick="loadNextPokemon(${nextPokemon.id})"><img src="./assets/icons/googleFontsIcons/right.svg" alt="right">
             </button>
             <div class="detailView__Img" id="detailView__Img"><img
                     src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png"

@@ -25,18 +25,14 @@ function playCrie(id) {
 * @param {object} pokemonSpecies - Species object of the Pokemon for which the view should be rendered
 * @param {string} descriptionText - Description Text of the Pokemon for which the view should be rendered
 */
-function renderDetailView(pokemon, descriptionText, evolveChain) {
+async function renderDetailView(pokemon, nextPokemon, previousPokemon, descriptionText, evolveChain) {
     let detailView__ContentRef = document.getElementById('detailView__Content');
     detailView__ContentRef.innerHTML = "";
-    detailView__ContentRef.innerHTML = getHTMLForDetailView(pokemon, descriptionText);
+    detailView__ContentRef.innerHTML = getHTMLForDetailView(pokemon, nextPokemon, previousPokemon, descriptionText);
     let detailView__EvolveContainer = document.getElementById('containerEvolveChain');
-
     for (let i = 0; i < evolveChain.length; i++) {
-        for (let j = 0; j < loadetPokemons.length; j++) {
-            if (evolveChain[i] == loadetPokemons[j].name) {
-                detailView__EvolveContainer.innerHTML += getHTMLForDetailEvolveChain(loadetPokemons[j]);
-            }
-        }
+        let pokemon = await getPokemonByName(evolveChain[i])
+        detailView__EvolveContainer.innerHTML += getHTMLForDetailEvolveChain(pokemon);
     }
 }
 
@@ -46,11 +42,21 @@ function renderDetailView(pokemon, descriptionText, evolveChain) {
 */
 async function loadNextPokemon(id) {
     id = checkPokemonId(id);
-    let pokemon = loadetPokemons.find(pokemon => pokemon.id === id);
+    if (searchMode) {
+        const currentIndex = searchedPokemon.findIndex(pokemon => pokemon.id === id);
+        pokemon = searchedPokemon[currentIndex];
+        nextPokemon = searchedPokemon[currentIndex + 1] == undefined ? searchedPokemon[currentIndex] : searchedPokemon[currentIndex + 1]
+        previousPokemon = searchedPokemon[currentIndex - 1] == undefined ? searchedPokemon[currentIndex] : searchedPokemon[currentIndex - 1];
+    } else {
+        const currentIndex = loadetPokemons.findIndex(pokemon => pokemon.id === id);
+        pokemon = loadetPokemons[currentIndex];
+        nextPokemon = loadetPokemons[currentIndex + 1] == undefined ? loadetPokemons[currentIndex] : loadetPokemons[currentIndex + 1];
+        previousPokemon = loadetPokemons[currentIndex - 1] == undefined ? loadetPokemons[currentIndex] : loadetPokemons[currentIndex - 1]
+    }
     let pokemonSpecies = await getPokemonSpecies(pokemon);
     let evolveChain = await getEvolveChain(pokemonSpecies.evolution_chain.url);
     let descriptionText = getFlavorText(pokemonSpecies);
-    renderDetailView(pokemon, descriptionText, evolveChain);
+    renderDetailView(pokemon, nextPokemon, previousPokemon, descriptionText, evolveChain);
     initBackgroundcolorSetting(pokemon);
     if (!muteMode) {
         playCrie(id);

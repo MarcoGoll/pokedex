@@ -24,7 +24,7 @@ async function initSearchPokemon() {
         if (searchResults.length == 0) {
             cardsContainerRef.innerHTML = '<p class="txtNoResult">Zu Ihrem Suchbegriff, konnten keine Pokemon gefunden werden.</p>';
         } else {
-            renderCardsIds(await searchPokemon(searchInputRef.value));
+            renderCardsIds(searchResults);
         }
     } else {
         setCSSClassesForInvalideSearchString();
