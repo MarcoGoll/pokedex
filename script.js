@@ -151,8 +151,15 @@ let muteMode = true;
     FUNCTIONS
 ====================================================================================================*/
 /**
-* Initialises the loading of all Pokemon into an array AND the rendering of a defined number of Pokemon
-*/
+ * Initializes the application.
+ * 
+ * This function loads all Pokémon data, clears the card container,
+ * and renders an initial set of Pokémon cards.
+ * 
+ * @async
+ * @function init
+ * @returns {Promise<void>} A promise that resolves when initialization is complete.
+ */
 async function init() {
     await setAllPokemons();
     cardsContainerRef.innerHTML = "";
@@ -160,8 +167,12 @@ async function init() {
 }
 
 /**
-* Loads all Pokemon and writes their name and URL to an array
-*/
+ * Fetches and stores a list of all Pokémon.
+ *
+ * @async
+ * @function setAllPokemons
+ * @returns {Promise<void>} A promise that resolves when the Pokémon list has been fetched and stored.
+ */
 async function setAllPokemons() {
     try {
         let listOfAllPokemon = await fetch(URL_ALLPOKEMON);
@@ -173,10 +184,14 @@ async function setAllPokemons() {
 }
 
 /**
-* Creates a certain number of Pokemon cards in the overview. 
-* @param {number} start - Index from which to start
-* @param {number} amount - Number to be rendered from the start (index)
-*/
+ * Renders a specific amount of Pokémon cards starting from a given index.
+ * 
+ * @async
+ * @function renderCardsAmount
+ * @param {number} start - The starting index from which Pokémon should be rendered.
+ * @param {number} amount - The number of Pokémon to render.
+ * @returns {Promise<void>} A promise that resolves when the cards have been rendered.
+ */
 async function renderCardsAmount(start, amount) {
     let forEend = start + amount;
     if (forEend > allPokemons.length) {
@@ -201,14 +216,17 @@ async function renderCardsAmount(start, amount) {
         toggleClass("d_none", "spinnerContainer");
         document.getElementById('loadNextContainer').classList.remove("d_none");
     }
-
 }
 
 /**
-* Loads a certain number of Pokemon details and writes them into an array 
-* @param {number} start - Index from which to start
-* @param {number} amount - Number to be rendered from the start (index)
-*/
+ * Loads a batch of Pokémon data and stores it in the global array.
+ * 
+ * @async
+ * @function addloadetPokemons
+ * @param {number} start - The starting index from which Pokémon should be loaded.
+ * @param {number} amount - The number of Pokémon to load.
+ * @returns {Promise<void>} A promise that resolves when all Pokémon data has been loaded and stored.
+ */
 async function addloadetPokemons(start, amount) {
     let forEend = start + amount;
     let currentlyLoadetPokemonAsPromises = []
@@ -227,10 +245,14 @@ async function addloadetPokemons(start, amount) {
 }
 
 /**
-* Returns detailed information about a Pokemon based on an ID
-* @param {number} id - Identifier of the Pokemon
-* @returns {object} - A Pokemon object
-*/
+ * Fetches detailed Pokémon data by its ID.
+ * 
+ * @async
+ * @function getPokemonById
+ * @param {number|string} id - The unique identifier of the Pokémon.
+ * @returns {Promise<Object|undefined>} A promise that resolves to the Pokémon data object,
+ * or undefined if an error occurs.
+ */
 async function getPokemonById(id) {
 
     try {
@@ -242,10 +264,14 @@ async function getPokemonById(id) {
 }
 
 /**
-* Returns detailed information about a Pokemon based on a Name
-* @param {number} name - Name of the Pokemon
-* @returns {object} - A Pokemon object
-*/
+ * Fetches detailed Pokémon data by its name.
+ * 
+ * @async
+ * @function getPokemonByName
+ * @param {string} name - The name of the Pokémon.
+ * @returns {Promise<Object|undefined>} A promise that resolves to the Pokémon data object,
+ * or undefined if an error occurs.
+ */
 async function getPokemonByName(name) {
     try {
         let detailsPokemonX = await fetch(URL_POKEMON + name);
@@ -256,10 +282,16 @@ async function getPokemonByName(name) {
 }
 
 /**
-* Returns species information about a Pokemon based on a Pokemon object
-* @param {object} pokemon - Pokemon object
-* @returns {object} - A Pokemon Object
-*/
+ * Fetches species data for a given Pokémon.
+ * 
+ * @async
+ * @function getPokemonSpecies
+ * @param {Object} pokemon - The Pokémon object containing a species property with a URL.
+ * @param {Object} pokemon.species - The species reference object.
+ * @param {string} pokemon.species.url - The API URL for the species data.
+ * @returns {Promise<Object|undefined>} A promise that resolves to the species data object,
+ * or undefined if an error occurs.
+ */
 async function getPokemonSpecies(pokemon) {
     try {
         let speciesPokemonX = await fetch(pokemon.species.url);
@@ -270,10 +302,13 @@ async function getPokemonSpecies(pokemon) {
 }
 
 /**
-* Returns an Array of type Id's matching the pokemon (based on a Pokemon object)
-* @param {object} pokemon - Pokemon object
-* @returns {(string|Array)} - All type ID's matching the pokemon
-*/
+ * Extracts type IDs for a given Pokémon.
+ * 
+ * @function getTypeIds
+ * @param {Object} pokemon - The Pokémon object containing type information.
+ * @param {Array} pokemon.types - An array of type objects assigned to the Pokémon.
+ * @returns {number[]} An array of type IDs corresponding to the Pokémon's types.
+ */
 function getTypeIds(pokemon) {
     let foundTypes = [];
     pokemon.types.forEach((type, i) => {
@@ -292,10 +327,13 @@ function getTypeIds(pokemon) {
 }
 
 /**
-* Sets the Backgroundcolor of a card within the overview
-* @param {number} id - ID of the Pokemon
-* @param {(string|Array)} arrayOfTypeIds - All type ID's matching the pokemon
-*/
+ * Sets the background style of a Pokémon card based on its type(s).
+ * 
+ * @function setBackGroundColorCard
+ * @param {number|string} id - The unique ID of the Pokémon, used to find the card element.
+ * @param {number[]} arrayOfTypeIds - An array of type IDs associated with the Pokémon.
+ * @returns {void}
+ */
 function setBackGroundColorCard(id, arrayOfTypeIds) {
     let cardRef = document.getElementById("card" + id);
     if (arrayOfTypeIds.length > 1) {
@@ -309,16 +347,23 @@ function setBackGroundColorCard(id, arrayOfTypeIds) {
 }
 
 /**
-* Starts next render process as soon as more Pokemon are to be loaded
-*/
+ * Starts next render process as soon as more Pokemon are to be loaded
+ *
+ * @function loadNextPokemonsOverview
+ * @returns {void}
+ */
 function loadNextPokemonsOverview() {
     renderCardsAmount(currentlyRendertCounter, LOADAMOUNT)
 }
 
 /**
-* Creates Pokemon cards in the overview, which are created for a list of IDs (e.g. search results)
-* @param {(number|Array)} pokemonIds - Array of ID's wich should be displayed in the Overview
-*/
+ * Renders Pokémon cards for a given array of Pokémon IDs.
+ * 
+ * @async
+ * @function renderCardsIds
+ * @param {Array<number|string>} pokemonIds - An array of Pokémon IDs to render.
+ * @returns {Promise<void>} A promise that resolves once all Pokémon cards are rendered.
+ */
 async function renderCardsIds(pokemonIds) {
     toggleClass("d_none", "spinnerContainer");
     searchedPokemon = [];
@@ -338,8 +383,11 @@ async function renderCardsIds(pokemonIds) {
 }
 
 /**
-* Reset the WebApp 
-*/
+ * Resets the Pokémon overview to its initial state.
+ * 
+ * @function reset
+ * @returns {void}
+ */
 function reset() {
     currentlyRendertCounter = 0;
     loadetPokemons = [];
@@ -350,8 +398,11 @@ function reset() {
 }
 
 /**
-* initialise loadNextPokemon
-*/
+ * Initiates loading of the next batch of Pokémon cards if not in search mode.
+ * 
+ * @function initLoadNextPokemonsOverview
+ * @returns {void}
+ */
 function initLoadNextPokemonsOverview() {
     if (searchMode == false) {
         loadMoreBtnRef.disabled = true;
@@ -360,8 +411,11 @@ function initLoadNextPokemonsOverview() {
 }
 
 /**
-* set the current Pokemon Amount
-*/
+ * Updates the displayed count of loaded Pokémon.
+ * 
+ * @function setPokemonCount
+ * @returns {void}
+ */
 function setPokemonCount() {
     let txtAmountRef = document.getElementById('txtAmount');
     txtAmountRef.innerHTML = `${loadetPokemons.length} von ${allPokemons.length}`

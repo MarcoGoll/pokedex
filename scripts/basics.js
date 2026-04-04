@@ -12,8 +12,11 @@ const refGoTopBtn = document.getElementById("goTopBtn");
 window.onscroll = function () { scrollFunction() };
 
 /**
-* When the user scrolls down 20px from the top of the document, show the button
-*/
+ * Shows or hides the "Go to Top" button based on scroll position.
+ * 
+ * @function scrollFunction
+ * @returns {void}
+ */
 function scrollFunction() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         refGoTopBtn.style.display = "block";
@@ -23,27 +26,36 @@ function scrollFunction() {
 }
 
 /**
-* When the user clicks on the button, scroll to the top of the document
-*/
+ * Scrolls the page to the top.
+ * 
+ * @function topFunction
+ * @returns {void}
+ */
 function topFunction() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
 /**
-* Toggled a class of an HTML element
-* @param {string} className - Name of the class
-* @param {number} identifier - Id of the HTML element
-*/
+ * Toggles a CSS class on an HTML element.
+ * 
+ * @function toggleClass
+ * @param {string} className - The CSS class to toggle.
+ * @param {string} identifier - The ID of the HTML element.
+ * @returns {void}
+ */
 function toggleClass(className, identifier) {
     let element = document.getElementById(identifier);
     element.classList.toggle(className);
 }
 
 /**
-* Stops the propagation process (bubbling)
-* @param {event} event - Event which was triggered
-*/
+ * Stops the propagation of an event in the DOM.
+ * 
+ * @function stopPropagation
+ * @param {Event} event - The DOM event to stop propagation for.
+ * @returns {void}
+ */
 function stopPropagation(event) {
     event.stopPropagation();
 }

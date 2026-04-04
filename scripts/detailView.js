@@ -1,7 +1,11 @@
 /**
-* Initialises the opening of the detail page for a specific Pokemon
-* @param {number} id - ID of the Pokemon for which the detailview should be displayed
-*/
+ * Opens the detail view dialog for a specific Pokémon.
+ * 
+ * @async
+ * @function openDetailDialog
+ * @param {number|string} id - The ID of the Pokémon to display in detail.
+ * @returns {Promise<void>} A promise that resolves when the detail view is displayed.
+ */
 async function openDetailDialog(id) {
     await loadNextPokemon(id);
     toggleClass('d_none', 'detailView');
@@ -10,9 +14,12 @@ async function openDetailDialog(id) {
 }
 
 /**
-* Plays the sound of a Pokemon
-* @param {number} id - ID of the Pokemon for which the sound should be played
-*/
+ * Plays the cry sound of a Pokémon by its ID.
+ * 
+ * @function playCrie
+ * @param {number|string} id - The ID of the Pokémon whose cry should be played.
+ * @returns {void}
+ */
 function playCrie(id) {
     let crie = new Audio(`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`);
     crie.volume = 0.01;
@@ -20,11 +27,17 @@ function playCrie(id) {
 }
 
 /**
-* Renders the Detailview of a Pokemon
-* @param {object} pokemon - Pokemon object for which the view should be rendered
-* @param {object} pokemonSpecies - Species object of the Pokemon for which the view should be rendered
-* @param {string} descriptionText - Description Text of the Pokemon for which the view should be rendered
-*/
+ * Renders the detailed view for a specific Pokémon, including its evolution chain.
+ * 
+ * @async
+ * @function renderDetailView
+ * @param {Object} pokemon - The Pokémon object to display in detail.
+ * @param {Object|null} nextPokemon - The next Pokémon in the list (if any).
+ * @param {Object|null} previousPokemon - The previous Pokémon in the list (if any).
+ * @param {string} descriptionText - A text description of the Pokémon.
+ * @param {Array<string>} evolveChain - An array of Pokémon names representing the evolution chain.
+ * @returns {Promise<void>} A promise that resolves when the detail view has been fully rendered.
+ */
 async function renderDetailView(pokemon, nextPokemon, previousPokemon, descriptionText, evolveChain) {
     let detailView__ContentRef = document.getElementById('detailView__Content');
     detailView__ContentRef.innerHTML = "";
@@ -37,9 +50,13 @@ async function renderDetailView(pokemon, nextPokemon, previousPokemon, descripti
 }
 
 /**
-* Loads the next OR previous Pokemon within the Deatailview
-* @param {number} id - ID of the Pokemon which should be loadet
-*/
+ * Loads detailed data for a Pokémon and prepares the detail view.
+ * 
+ * @async
+ * @function loadNextPokemon
+ * @param {number|string} id - The ID of the Pokémon to load.
+ * @returns {Promise<void>} A promise that resolves when the Pokémon detail view is fully prepared and displayed.
+ */
 async function loadNextPokemon(id) {
     id = checkPokemonId(id);
     if (searchMode) {
@@ -64,10 +81,15 @@ async function loadNextPokemon(id) {
     runmove();
 }
 
+
 /**
-* Returns the first found "en" description text of the species object
-* @param {object} pokemonSpecies - Species Details of the Pokemon
-*/
+ * Retrieves the English flavor text description for a Pokémon species.
+ * 
+ * @function getFlavorText
+ * @param {Object} pokemonSpecies - The Pokémon species object containing flavor text entries.
+ * @param {Array} pokemonSpecies.flavor_text_entries - Array of flavor text objects with language and text.
+ * @returns {string|undefined} The English flavor text description, or undefined if none is found.
+ */
 function getFlavorText(pokemonSpecies) {
     for (let i = 0; i < pokemonSpecies.flavor_text_entries.length; i++) {
         if (pokemonSpecies.flavor_text_entries[i].language.name == "en") {
@@ -77,9 +99,12 @@ function getFlavorText(pokemonSpecies) {
 }
 
 /**
-* Initialises the type-dependent setting of the backgroundcolor of the detail view
-* @param {object} pokemon - Pokemon for which the backgroundcolor of the detail view should be set
-*/
+ * Initializes and sets the background color for a Pokémon's detail view based on its type(s).
+ * 
+ * @function initBackgroundcolorSetting
+ * @param {Object} pokemon - The Pokémon object for which to set the background.
+ * @returns {void}
+ */
 function initBackgroundcolorSetting(pokemon) {
     let arrayOfTypeIds = getTypeIds(pokemon);
     let typesDetailviewRef = document.getElementById('typesDetailview');
@@ -94,9 +119,12 @@ function initBackgroundcolorSetting(pokemon) {
 }
 
 /**
-* Sets the type-dependent backgroundcolor of the detail view
-* @param {(number|Array)} arrayOfTypeIds - List of Type Id's matching the Pokemon
-*/
+ * Sets the background gradient of the Pokémon detail view based on its type(s).
+ * 
+ * @function setBackGroundColorDetailView
+ * @param {number[]} arrayOfTypeIds - An array of type IDs associated with the Pokémon.
+ * @returns {void}
+ */
 function setBackGroundColorDetailView(arrayOfTypeIds) {
     let detailViewRef = document.getElementById("detailView");
     if (arrayOfTypeIds.length > 1) {
@@ -109,10 +137,12 @@ function setBackGroundColorDetailView(arrayOfTypeIds) {
 }
 
 /**
-* Checks the limits of Pokemon ID. If a limit is exceeded, an error ID (9999999999) or a more suitable ID is returned
-* @param {number} id - Unsafe ID of the Pokemon
-* @returns {number} Safe ID of the Pokemon
-*/
+ * Normalizes Pokémon IDs to valid values for the API.
+ * 
+ * @function checkPokemonId
+ * @param {number} id - The original Pokémon ID.
+ * @returns {number} The normalized Pokémon ID.
+ */
 function checkPokemonId(id) {
     switch (id) {
         case 0:
@@ -128,6 +158,12 @@ function checkPokemonId(id) {
     }
 }
 
+/**
+ * Toggles the application's mute mode on or off.
+ * 
+ * @function changeMuteMode
+ * @returns {void}
+ */
 function changeMuteMode() {
     let muteBtnRef = document.getElementById('muteBtn');
     if (muteMode == true) {
@@ -140,10 +176,13 @@ function changeMuteMode() {
 }
 
 /**
-    * Fetches all Pokémon in an evolution chain.
-    * @param {string} evolutonChainURL - URL of the evolution chain.
-    * @returns {Promise<string[]>} Array of Pokémon names in the evolution chain.
-    */
+ * Fetches and returns the full evolution chain of a Pokémon.
+ * 
+ * @async
+ * @function getEvolveChain
+ * @param {string} evolutonChainURL - The URL to fetch the Pokémon's evolution chain.
+ * @returns {Promise<Array<string>>} A promise that resolves to an array of Pokémon names in the evolution chain.
+ */
 async function getEvolveChain(evolutonChainURL) {
     let htmlResponse = await fetch(evolutonChainURL);
     let evolutionData = await htmlResponse.json();
@@ -153,10 +192,13 @@ async function getEvolveChain(evolutonChainURL) {
 }
 
 /**
-* Recursively collects all Pokémon names in the evolution chain.
-* @param {Object} chain - The current node in the evolution chain.
-* @param {string[]} resultArray - Array to store Pokémon names.
-*/
+ * Recursively extracts all Pokémon names from an evolution chain.
+ * 
+ * @function getAllEvolutions
+ * @param {Object} chain - The current node in the Pokémon evolution chain.
+ * @param {string[]} resultArray - The array to which all Pokémon names are appended.
+ * @returns {void}
+ */
 function getAllEvolutions(chain, resultArray) {
     resultArray.push(chain.species.name); // pushed den Namen des Pokemon in das Array von dem gerade die Evolutionstufen ermittelt werden
     if (chain.evolves_to && chain.evolves_to.length > 0) { // True wenn es Evolutionen gibt / fals wenn es keine Evolutionen gibt

@@ -1,9 +1,11 @@
 /**
-* Returns the HTML-Code for a Pokemon Card with one Type
-* @param {object} loadetPokemon - Pokemon Object for wich a card should be rendert
-* @param {string} typeURL - Image URL for Type One
-* @returns {string} - The HTML-Code for a Pokemon Card with one Type
-*/
+ * Generates the HTML string for a Pokémon card with a single type.
+ * 
+ * @function getHTMLForCardWithOneType
+ * @param {Object} loadetPokemon - The Pokémon object containing its data.
+ * @param {string} typeURL - The URL of the type icon image for this Pokémon.
+ * @returns {string} The HTML string representing the Pokémon card.
+ */
 function getHTMLForCardWithOneType(loadetPokemon, typeURL) {
     return `
                     <div class="card" id="card${loadetPokemon.id}" onclick="openDetailDialog(${loadetPokemon.id})">
@@ -24,12 +26,14 @@ function getHTMLForCardWithOneType(loadetPokemon, typeURL) {
 }
 
 /**
-* Returns the HTML-Code for a Pokemon Card with two Types
-* @param {object} loadetPokemon - Pokemon Object for wich a card should be rendert
-* @param {string} type1URL - Image URL for Type One
-* @param {string} type2URL - Image URL for Type Two
-* @returns {string} - The HTML-Code for a Pokemon Card with one Type
-*/
+ * Generates the HTML string for a Pokémon card with two types.
+ * 
+ * @function getHTMLForCardWithTwoTypes
+ * @param {Object} loadetPokemon - The Pokémon object containing its data.
+ * @param {string} type1URL - The URL of the first type icon image.
+ * @param {string} type2URL - The URL of the second type icon image.
+ * @returns {string} The HTML string representing the Pokémon card with two types.
+ */
 function getHTMLForCardWithTwoTypes(loadetPokemon, type1URL, type2URL) {
     return `
                     <div class="card" id="card${loadetPokemon.id}" onclick="openDetailDialog(${loadetPokemon.id})">
@@ -54,11 +58,15 @@ function getHTMLForCardWithTwoTypes(loadetPokemon, type1URL, type2URL) {
 }
 
 /**
-* Returns the HTML-Code for a Pokemon detail view
-* @param {object} pokemon - Pokemon object for which the detail view should be displayed
-* @param {string} descriptionText - Description Text which should be displayed
-* @returns {string} - The HTML-Code for a Pokemon detail view
-*/
+ * Generates the HTML string for the detailed view of a Pokémon.
+ * 
+ * @function getHTMLForDetailView
+ * @param {Object} pokemon - The current Pokémon object to display.
+ * @param {Object} nextPokemon - The next Pokémon object for navigation.
+ * @param {Object} previousPokemon - The previous Pokémon object for navigation.
+ * @param {string} descriptionText - The flavor text description for the Pokémon.
+ * @returns {string} The HTML string representing the Pokémon's detailed view.
+ */
 function getHTMLForDetailView(pokemon, nextPokemon, previousPokemon, descriptionText) {
     return `
 
@@ -175,6 +183,13 @@ function getHTMLForDetailView(pokemon, nextPokemon, previousPokemon, description
     `
 }
 
+/**
+ * Generates the HTML string for a Pokémon image in the evolution chain.
+ * 
+ * @function getHTMLForDetailEvolveChain
+ * @param {Object} pokemon - The Pokémon object containing its sprite data.
+ * @returns {string} The HTML string for the Pokémon's image in the evolution chain.
+ */
 function getHTMLForDetailEvolveChain(pokemon) {
     return `
         <img class="evolveChainImg" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
@@ -182,11 +197,13 @@ function getHTMLForDetailEvolveChain(pokemon) {
 }
 
 /**
-* Returns the type spezific HTML-Code for a Pokemon detail view with one Type
-* @param {object} pokemon - Pokemon object for which the detail view should be displayed
-* @param {object} type1URL - Image URL for Type One
-* @returns {string} - The type spezific HTML-Code for a Pokemon detail view with one Type
-*/
+ * Generates the HTML for a single Pokémon type in the detail view.
+ * 
+ * @function renderDetailViewOneType
+ * @param {Object} pokemon - The Pokémon object containing its ID.
+ * @param {string} type1URL - The URL of the type icon image.
+ * @returns {string} The HTML string representing the Pokémon's single type in the detail view.
+ */
 function renderDetailViewOneType(pokemon, type1URL) {
     return `
                     <div class="card__type">
@@ -197,12 +214,14 @@ function renderDetailViewOneType(pokemon, type1URL) {
 }
 
 /**
-* Returns the type spezific HTML-Code for a Pokemon detail view with two Types
-* @param {object} pokemon - Pokemon object for which the detail view should be displayed
-* @param {object} type1URL - Image URL for Type One
-* @param {object} type2URL - Image URL for Type Two
-* @returns {string} - The type spezific HTML-Code for a Pokemon detail view with two Types
-*/
+ * Generates the HTML for two Pokémon types in the detail view.
+ * 
+ * @function renderDetailViewTwoTypes
+ * @param {Object} pokemon - The Pokémon object containing its ID.
+ * @param {string} type1URL - The URL of the first type icon image.
+ * @param {string} type2URL - The URL of the second type icon image.
+ * @returns {string} The HTML string representing the Pokémon's two types in the detail view.
+ */
 function renderDetailViewTwoTypes(pokemon, type1URL, type2URL) {
     return `
                     <div class="card__type">

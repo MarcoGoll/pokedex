@@ -8,8 +8,12 @@ let searchBtnRef = document.getElementById('searchBtn');
     FUNCTIONS
 ====================================================================================================*/
 /**
-* Initialises the search process
-*/
+ * Initializes the Pokémon search process based on the user's input.
+ * 
+ * @async
+ * @function initSearchPokemon
+ * @returns {Promise<void>} A promise that resolves when the search initialization is complete.
+ */
 async function initSearchPokemon() {
     if (searchInputRef.value.length == "") {
         setCSSClassesForEmptySearchString();
@@ -17,26 +21,29 @@ async function initSearchPokemon() {
         renderCardsAmount(currentlyRendertCounter, LOADAMOUNT);
     }
     else if (searchInputRef.value.length >= 3) {
-            searchMode = true;
-            document.getElementById('loadNextContainer').classList.add("d_none");
-            setCSSClassesForValideSearchString();
-            let searchResults = await searchPokemon(searchInputRef.value);
-            if (searchResults.length == 0) {
-                cardsContainerRef.innerHTML = '<p class="txtNoResult">Zu Ihrem Suchbegriff, konnten keine Pokemon gefunden werden.</p>';
-            } else {
-                renderCardsIds(searchResults);
-            }
-        
+        searchMode = true;
+        document.getElementById('loadNextContainer').classList.add("d_none");
+        setCSSClassesForValideSearchString();
+        let searchResults = await searchPokemon(searchInputRef.value);
+        if (searchResults.length == 0) {
+            cardsContainerRef.innerHTML = '<p class="txtNoResult">Zu Ihrem Suchbegriff, konnten keine Pokemon gefunden werden.</p>';
+        } else {
+            renderCardsIds(searchResults);
+        }
+
     } else {
         setCSSClassesForInvalideSearchString();
     }
 }
 
 /**
-* Searches for the search string in the list of all Pokemon, comparing name and search string. The IDs of hits are returned in an array
-* @param {string} searchString - String to be searched for
-* @returns {(number|Array)} ID's of Pokemon where the search string matches the name
-*/
+ * Searches for Pokémon whose names include the given search string.
+ * 
+ * @async
+ * @function searchPokemon
+ * @param {string} searchString - The string to search for in Pokémon names.
+ * @returns {Promise<number[]>} A promise that resolves to an array of Pokémon IDs matching the search string.
+ */
 async function searchPokemon(searchString) {
     let searchedResult = [];
     for (let i = 0; i < allPokemons.length; i++) {
@@ -49,8 +56,11 @@ async function searchPokemon(searchString) {
 }
 
 /**
-* Set all CSS classes that should be present for an EmptySearchString
-*/
+ * Resets the CSS classes for the search input and button when the search string is empty.
+ * 
+ * @function setCSSClassesForEmptySearchString
+ * @returns {void}
+ */
 function setCSSClassesForEmptySearchString() {
     searchInputRef.classList.remove("inputInvalide");
     searchBtnRef.classList.remove("inputInvalideBtn");
@@ -59,8 +69,11 @@ function setCSSClassesForEmptySearchString() {
 }
 
 /**
-* Set all CSS classes that should be present for an ValideSearchString
-*/
+ * Applies CSS classes to indicate a valid search input string.
+ * 
+ * @function setCSSClassesForValideSearchString
+ * @returns {void}
+ */
 function setCSSClassesForValideSearchString() {
     searchInputRef.classList.add("inputValide");
     searchInputRef.classList.remove("inputInvalide");
@@ -69,8 +82,11 @@ function setCSSClassesForValideSearchString() {
 }
 
 /**
-* Set all CSS classes that should be present for an InvalideSearchString
-*/
+ * Applies CSS classes to indicate an invalid search input string.
+ * 
+ * @function setCSSClassesForInvalideSearchString
+ * @returns {void}
+ */
 function setCSSClassesForInvalideSearchString() {
     searchInputRef.classList.add("inputInvalide");
     searchInputRef.classList.remove("inputValide");
