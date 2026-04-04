@@ -17,15 +17,16 @@ async function initSearchPokemon() {
         renderCardsAmount(currentlyRendertCounter, LOADAMOUNT);
     }
     else if (searchInputRef.value.length >= 3) {
-        searchMode = true;
-        document.getElementById('loadNextContainer').classList.add("d_none");
-        setCSSClassesForValideSearchString();
-        let searchResults = await searchPokemon(searchInputRef.value);
-        if (searchResults.length == 0) {
-            cardsContainerRef.innerHTML = '<p class="txtNoResult">Zu Ihrem Suchbegriff, konnten keine Pokemon gefunden werden.</p>';
-        } else {
-            renderCardsIds(searchResults);
-        }
+            searchMode = true;
+            document.getElementById('loadNextContainer').classList.add("d_none");
+            setCSSClassesForValideSearchString();
+            let searchResults = await searchPokemon(searchInputRef.value);
+            if (searchResults.length == 0) {
+                cardsContainerRef.innerHTML = '<p class="txtNoResult">Zu Ihrem Suchbegriff, konnten keine Pokemon gefunden werden.</p>';
+            } else {
+                renderCardsIds(searchResults);
+            }
+        
     } else {
         setCSSClassesForInvalideSearchString();
     }
