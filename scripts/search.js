@@ -11,7 +11,7 @@ let searchBtnRef = document.getElementById('searchBtn');
  * Initializes the Pokémon search process based on the user's input.
  * 
  * @async
- * @function initSearchPokemon
+ * @function initSearchPokemon 
  * @returns {Promise<void>} A promise that resolves when the search initialization is complete.
  */
 async function initSearchPokemon() {
